@@ -1,3 +1,13 @@
 <template>
-    <h1>Testing This component {accountId}</h1>
+    <div class="c-container">
+        <lightning-layout horizontal-align={horizontalAlign}>
+            <lightning-layout-item  size="5" padding="around-small">
+               <c-welcome-screen></c-welcome-screen>
+            </lightning-layout-item>
+            
+            <lightning-layout-item  size="7" padding="around-small">
+                Chat Section Here
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
 </template>
