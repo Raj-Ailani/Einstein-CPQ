@@ -1,0 +1,22 @@
+<template>
+       <article class="slds-card" part="card"><div class="slds-einstein-header slds-card__header slds-grid">
+        <header class="slds-media slds-media_center slds-has-flexi-truncate" part="header"><div class="slds-media__body" part="title">
+            <slot class="slds-hide" name="title"></slot>
+        </div>
+
+</header>
+</div>
+        <div class="slds-card__body" part="body">
+            <lightning-button
+            label="Open Einstein CPQ"
+            onclick={navigateToComponent}
+            icon-name="utility:einstein" icon-position="left"
+            style="display: grid; width: 100%; padding:0px 10px 0px 10px; font-size:medium;">
+          </lightning-button>
+     
+        </div><slot class="slds-hide" name="footer">
+
+       </slot>
+    </article>
+       
+</template>
