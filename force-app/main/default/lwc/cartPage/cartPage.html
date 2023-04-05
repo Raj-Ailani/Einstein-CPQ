@@ -1,0 +1,20 @@
+<template>
+    <lightning-card title="Product Details">
+        <template for:each={productIds} for:item="productId" for:index="index">
+            <lightning-record-view-form key={productId} record-id={productId} object-api-name="Product2">
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-output-field field-name="Name"></lightning-output-field>
+                        <lightning-output-field field-name="ProductCode"></lightning-output-field>
+                        <lightning-output-field field-name="Description"></lightning-output-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <!-- <lightning-output-field field-name="UnitPrice"></lightning-output-field> -->
+                        <lightning-output-field field-name="SBQQ__DefaultQuantity__c"></lightning-output-field>
+                        <lightning-output-field field-name="Family"></lightning-output-field>
+                    </div>
+                </div>
+            </lightning-record-view-form>
+        </template>
+    </lightning-card>
+</template>
