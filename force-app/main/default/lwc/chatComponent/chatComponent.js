@@ -2,17 +2,46 @@ import { LightningElement } from 'lwc';
 
 export default class ChatComponent extends LightningElement {
 
-    messageAssistant = "Hello, how can I help you today?";
-    messageUser = "Create a new Opportunity";
-    eventMessage = "New Opportunity has been created";
+    jsonString = '{"transcript":[{"timestamp":1680983134517, "owner":"GPT", "userName":"Einstein GPT", "message":"Hello, how can I help you today?"},{"timestamp":1680983222866, "owner":"otherUser", "userName":"Alex Garcia", "message":"Create a new Opportunity"},{"timestamp":1680983222900, "owner":"event", "message":"New Opportunity has been created"},{"timestamp":1680983302565, "owner":"user", "userName":"Jeet Bhardiya", "message":"Great"}]}';
+
+    // messageAssistant = "Hello, how can I help you today?";
+    // messageUser = "Create a new Opportunity";
+    // eventMessage = "New Opportunity has been created";
+    // userName = "Jeet Bhardiya";
+    // otherUserName = "Alex Garcia";
+
+
+
     // userOrOther = 0;
 
     handleClick(event) {
         console.log("Button Works");
-        this.createAssistantElements(this.messageAssistant);
-        this.createUserElements(this.messageUser,0);
-        this.createUserElements(this.messageUser,1);
-        this.createEventElements(this.eventMessage);
+
+        const jsonArray = JSON.parse(this.jsonString).transcript;
+
+        for(var i = 0; i < jsonArray.length; i++){ 
+            var entity = jsonArray[i];
+
+            console.log(entity.owner);
+
+            if(entity.owner == 'GPT'){
+                this.createAssistantElements(entity.message,entity.timestamp);
+            }
+            else if(entity.owner == 'otherUser'){
+                this.createUserElements(entity.message,1,entity.userName,entity.timestamp);
+            }
+            else if(entity.owner == 'user'){
+                this.createUserElements(entity.message,0,entity.userName,entity.timestamp);
+            }
+            else if(entity.owner == 'event'){
+                this.createEventElements(entity.message);
+            }
+        }
+
+        // this.createAssistantElements(this.messageAssistant);
+        // this.createUserElements(this.messageUser,0, this.userName);
+        // this.createUserElements(this.messageUser,1,this.otherUserName);
+        // this.createEventElements(this.eventMessage);
         
     }
 
@@ -28,8 +57,9 @@ export default class ChatComponent extends LightningElement {
     //     ulElement.appendChild(pelement);
     // }
 
-    createAssistantElements(message){
 
+    createAssistantElements(message,time){ // if time != 0, old, time = 0, current time
+        console.log("Inside");
         const liElement = document.createElement("li");
         
         liElement.classList.add("slds-chat-listitem");
@@ -69,7 +99,17 @@ export default class ChatComponent extends LightningElement {
         const grandChildDiv2 = document.createElement("div");
         grandChildDiv2.className = "slds-chat-message__meta";
 
-        const responseMetadataText = "Einstein GPT • 4:59 PM";
+        
+        // console.log(this.getCurrentTime());
+        var responseMetadataText = "Einstein GPT";
+
+        if(time != 0){
+            responseMetadataText = "Einstein GPT • " + this.timestampToLocalTime(time);
+        }
+        else{
+            responseMetadataText = "Einstein GPT • " + this.getCurrentTime();
+        }
+
         const grandChildDiv2Text = document.createTextNode(responseMetadataText);
 
         grandChildDiv2.appendChild(grandChildDiv2Text);
@@ -89,7 +129,7 @@ export default class ChatComponent extends LightningElement {
 
     }
 
-    createUserElements(message,userOrOther){
+    createUserElements(message,userOrOther,userName,time){
         const liElement = document.createElement("li");
         
         liElement.classList.add("slds-chat-listitem");
@@ -122,7 +162,15 @@ export default class ChatComponent extends LightningElement {
         const grandChildDiv2 = document.createElement("div");
         grandChildDiv2.className = "slds-chat-message__meta";
 
-        const responseMetadataText = "Amber Cann • 5:23 PM";
+        var responseMetadataText = userName;
+
+        if(time != 0){
+            responseMetadataText = userName + " • " + this.timestampToLocalTime(time);
+        }
+        else{
+            responseMetadataText = userName + " • " + this.getCurrentTime();
+        }
+        
         const grandChildDiv2Text = document.createTextNode(responseMetadataText);
 
         grandChildDiv2.appendChild(grandChildDiv2Text);
@@ -171,5 +219,22 @@ export default class ChatComponent extends LightningElement {
         const ulElement = this.template.querySelector("ul");
 
         ulElement.appendChild(liElement);
+    }
+
+    getCurrentTime(){
+        return new Date().toLocaleTimeString('en-US', {
+            hour: 'numeric', minute: 'numeric', hour12: true
+            })
+    }
+
+    timestampToLocalTime(timestamp){
+        return new Date(timestamp).toLocaleString("en-US", {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
     }
 }
