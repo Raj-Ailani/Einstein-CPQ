@@ -1,0 +1,15 @@
+<template>
+    <lightning-card
+        title="Opportunity"
+        icon-name="standard:opportunity">
+        <div class="slds-var-m-around_medium">
+            <template for:each={wiredOppty.data} for:item="Oppty">
+                <lightning-record-form key={Oppty.Id}
+                    object-api-name={objectApiName}
+                    record-id={Oppty.Id}
+                    fields={fields}
+                ></lightning-record-form>
+            </template>
+        </div>
+    </lightning-card>
+</template>
