@@ -1,6 +1,8 @@
 .title{
     font-size: 30px;
-
+}
+.main-content{
+    border: 1px solid black;
 }
 .center-img{
     display: block;

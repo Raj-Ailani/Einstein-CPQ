@@ -9,53 +9,51 @@ export default class ChatComponent extends LightningElement {
     // eventMessage = "New Opportunity has been created";
     // userName = "Jeet Bhardiya";
     // otherUserName = "Alex Garcia";
+    loadedFirstTime = false;
 
 
 
     // userOrOther = 0;
+    renderedCallback(){
+        if(this.loadedFirstTime == false){
+            console.log("Button Works");
 
-    handleClick(event) {
-        console.log("Button Works");
+            const jsonArray = JSON.parse(this.jsonString).transcript;
 
-        const jsonArray = JSON.parse(this.jsonString).transcript;
+            for(var i = 0; i < jsonArray.length; i++){ 
+                var entity = jsonArray[i];
 
-        for(var i = 0; i < jsonArray.length; i++){ 
-            var entity = jsonArray[i];
+                console.log(entity.owner);
 
-            console.log(entity.owner);
-
-            if(entity.owner == 'GPT'){
-                this.createAssistantElements(entity.message,entity.timestamp);
+                if(entity.owner == 'GPT'){
+                    this.createAssistantElements(entity.message,entity.timestamp);
+                }
+                else if(entity.owner == 'otherUser'){
+                    this.createUserElements(entity.message,1,entity.userName,entity.timestamp);
+                }
+                else if(entity.owner == 'user'){
+                    this.createUserElements(entity.message,0,entity.userName,entity.timestamp);
+                }
+                else if(entity.owner == 'event'){
+                    this.createEventElements(entity.message);
+                }
             }
-            else if(entity.owner == 'otherUser'){
-                this.createUserElements(entity.message,1,entity.userName,entity.timestamp);
-            }
-            else if(entity.owner == 'user'){
-                this.createUserElements(entity.message,0,entity.userName,entity.timestamp);
-            }
-            else if(entity.owner == 'event'){
-                this.createEventElements(entity.message);
-            }
+            this.loadedFirstTime = true;
         }
-
-        // this.createAssistantElements(this.messageAssistant);
-        // this.createUserElements(this.messageUser,0, this.userName);
-        // this.createUserElements(this.messageUser,1,this.otherUserName);
-        // this.createEventElements(this.eventMessage);
-        
     }
 
-
-    // test(){
-    //     console.log("Works inside");
-    //     const pelement = document.createElement("p");
-    //     const pelementText = document.createTextNode("This is a text");
+    
+    handleClick(event) {
+        console.log("Click");
+        var input = this.template.querySelector(".input");
+        var inputValue = input.value.replace(/\s+/g, ' ').trim();
+        console.log(inputValue);
+        this.createUserElements(input.value, 0, "Jeet Bhardiya", 0);
+        const currJSON = {"timestamp":Date.now(),"owner":"user","userName":"Jeet Bhardiya","message":inputValue};
+        console.log(JSON.stringify(currJSON));
         
-    //     pelement.appendChild(pelementText);
-    //     const ulElement = this.template.querySelector("ul");
-    //     console.log(ulElement);
-    //     ulElement.appendChild(pelement);
-    // }
+        input.value = "";
+    }
 
 
     createAssistantElements(message,time){ // if time != 0, old, time = 0, current time
