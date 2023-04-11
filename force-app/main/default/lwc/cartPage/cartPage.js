@@ -1,5 +1,4 @@
 import { LightningElement, wire } from 'lwc';
-import ProductImages from '@salesforce/resourceUrl/ProductImages';
 
 export default class CartPage extends LightningElement {
     productIds = ['01t2w00000GeEpWAAV', '01t2w00000GeEpyAAF',
