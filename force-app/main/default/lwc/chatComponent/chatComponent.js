@@ -1,6 +1,9 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, wire } from 'lwc';
+import { publish, MessageContext } from 'lightning/messageService';
+import OppQuote_CHANNEL from '@salesforce/messageChannel/OppQuote__c';
 
 export default class ChatComponent extends LightningElement {
+    
 
     jsonString = '{"transcript":[{"timestamp":1680983134517, "owner":"GPT", "userName":"Einstein GPT", "message":"Hello, how can I help you today?"},{"timestamp":1680983222866, "owner":"otherUser", "userName":"Alex Garcia", "message":"Create a new Opportunity"},{"timestamp":1680983222900, "owner":"event", "message":"New Opportunity has been created"},{"timestamp":1680983302565, "owner":"user", "userName":"Jeet Bhardiya", "message":"Great"}]}';
 
@@ -10,6 +13,8 @@ export default class ChatComponent extends LightningElement {
     // userName = "Jeet Bhardiya";
     // otherUserName = "Alex Garcia";
     loadedFirstTime = false;
+    @wire(MessageContext)
+    messageContext;
 
 
 
@@ -47,12 +52,19 @@ export default class ChatComponent extends LightningElement {
         console.log("Click");
         var input = this.template.querySelector(".input");
         var inputValue = input.value.replace(/\s+/g, ' ').trim();
-        console.log(inputValue);
-        this.createUserElements(input.value, 0, "Jeet Bhardiya", 0);
-        const currJSON = {"timestamp":Date.now(),"owner":"user","userName":"Jeet Bhardiya","message":inputValue};
-        console.log(JSON.stringify(currJSON));
+        if(inputValue != ""){
+            console.log(inputValue);
+            this.createUserElements(input.value, 0, "Jeet Bhardiya", 0);
+            const currJSON = {"timestamp":Date.now(),"owner":"user","userName":"Jeet Bhardiya","message":inputValue};
+            console.log(JSON.stringify(currJSON));    
+        }
         
         input.value = "";
+        var payload = { 
+            OpptyOrQoute: 'Opportunity'
+          };
+        //   console.log('payload',payload);
+          publish(this.messageContext, OppQuote_CHANNEL, payload);
     }
 
 
