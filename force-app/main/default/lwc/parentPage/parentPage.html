@@ -3,9 +3,13 @@
     <div class="c-container">
         <lightning-layout horizontal-align={horizontalAlign}>
             <lightning-layout-item  size="7" padding="around-small">
-               <c-welcome-screen></c-welcome-screen>
+                <template if:true={welcomeOrRecord}>
+                    <c-welcome-screen></c-welcome-screen>
+                </template>
+                <template if:false={welcomeOrRecord}>
+                    <c-oppty-quote-page></c-oppty-quote-page>
+                </template>
             </lightning-layout-item>
-            
             <lightning-layout-item  size="5" padding="around-small">
                 <c-chat-component></c-chat-component>
             </lightning-layout-item>

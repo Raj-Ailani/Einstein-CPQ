@@ -1,25 +1,27 @@
 <template>
-    <template if:true={opportunityDisplay.data}>
+    <template if:true={opportunityDisplay}>
         <lightning-card
         title="Opportunity"
         icon-name="standard:opportunity">
         <div class="slds-var-m-around_medium">
-                <lightning-record-form record-id={opportunityrecord.Id}
+                <lightning-record-form record-id={opportunityrecordId}
                 object-api-name= 'Opportunity' 
-                fields={OpportunityFields}>
+                fields={OpportunityFields}
+                mode="view">
             </lightning-record-form>
         </div>
        </lightning-card>
    </template>
 
-   <template if:true={QuoteDisplay.data}>
+   <template if:true={QuoteDisplay}>
     <lightning-card
     title="Quote"
     icon-name="standard:opportunity">
     <div class="slds-var-m-around_medium">
-            <lightning-record-form record-id='a0q2w000003wtL8AAI'
+            <lightning-record-form record-id={quoteRecordId}
             object-api-name= 'SBQQ__Quote__c' 
-            fields={quoteFields}>
+            fields={quoteFields}
+            mode="view">
         </lightning-record-form>
     </div>
 </lightning-card>
