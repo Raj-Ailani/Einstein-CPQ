@@ -1,5 +1,5 @@
 import { LightningElement, api, wire } from 'lwc';
-import getQuoteLinesData from '@salesforce/apex/getQuoteLines.getQuoteLinesData'
+import getQuoteLinesData from '@salesforce/apex/getQuoteLineDetails.getQuoteLinesData'
 
 export default class CartPage extends LightningElement {
     quoteLineRecord;
