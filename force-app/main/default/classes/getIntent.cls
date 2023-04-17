@@ -1,6 +1,7 @@
 public with sharing class getIntent {
-    public static String getIntentOfUser(String document) {
+    public static Output getIntentOfUser(String document, Id accountId) {
      String token = 'GRMVANCFKFBE6M2IJJIDENKTLBMVKM2NJRHEEN2OGNJEYWKJKZJUOVJVIE3FUSSEIZIFCSSWKVIVSMSDGRFE4WCUK43TENSWIZHTOVCRIQZDKVCDKBGUIRBUGVFVKR2OJZBTEWSRIVEU2TKEKBJUCN2IKRDEWRRTJY2ES7COIE';       
+     //Account acct = [SELECT Id, Name FROM Account WHERE Id = :accountId LIMIT 1];
 
 
      Http http = new Http();
@@ -12,7 +13,7 @@ public with sharing class getIntent {
      String authorizationHeader = 'Bearer '+token;
      req.setHeader('Authorization', authorizationHeader);
 
-     String body = '{"modelId":"JZAVWEZDLAKQHM6LL724D4VZKQ","document":"'+document+'"}';    
+     String body = '{"modelId":"3S35F2UFRGKJOVVCUHXYQ5DH74","document":"'+document+'"}';    
 
      req.setBody(body);
      res = http.send(req);
@@ -27,15 +28,32 @@ public with sharing class getIntent {
 
          for(ListProbability prob: allProb){
              if(Decimal.valueOf(prob.probability) > Decimal.valueOf(finalIntent.probability)){
-                 System.debug('Testing if inside');
                  finalIntent = prob;
              }
          }
-         System.debug(finalIntent);
-         String finalLabel = finalIntent.label;
-         return finalLabel;
+
+         Output outs = new Output();
+        if(finalIntent.label == 'createOpportunity'){
+            Id oppID = createOpportunity.createOpportunityRecord(accountId);
+            outs.nextScreen = 'Opportunity';
+            outs.id = oppID;
+
+        }else if (finalIntent.label == 'createQuote'){
+            Id quoteId = createQuote.createQuoteRecord(accountId);
+            outs.nextScreen = 'Quote';
+            outs.id = quoteId;
+
+        }else if(finalIntent.label == 'addProducts'){
+            outs.nextScreen = 'Cart';
+           
+        }
+        System.debug(outs);
+         return outs;
      }   else{
-         return 'Error in getting response. Please look into your API';
+        Output outs = new Output();
+        outs.nextScreen = 'Error';
+
+         return outs;
      }
     }
 
@@ -54,5 +72,12 @@ public with sharing class getIntent {
         public String status;
         @AuraEnabled
         public String queuePosition;
+    }
+
+    public class Output{
+        @AuraEnabled
+        public String nextScreen;
+        @AuraEnabled
+        public String id;
     }
 }
