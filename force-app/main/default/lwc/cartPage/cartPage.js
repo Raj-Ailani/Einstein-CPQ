@@ -1,21 +1,16 @@
 import { LightningElement, api, wire } from 'lwc';
 import getQuoteLinesData from '@salesforce/apex/getQuoteLineDetails.getQuoteLinesData'
 
-export default class CartPage extends LightningElement {
-    quoteLineRecord;
-    quoteLineRecordId;
-    quoteLineFields = ['Name', 'SBQQ__Number__c', 'SBQQ__Product__c', 'SBQQ__Quantity__c', 
-        'SBQQ__ListPrice__c', 'SBQQ__RegularPrice__c', 'SBQQ__CustomerPrice__c', 'SBQQ__NetPrice__c',
-        'SBQQ__NetTotal__c'];
-    quoteLineDisplay;
+const quoteLineFields = [{ label: 'Name', fieldName: 'Name' }, { label: 'Number', fieldName: 'SBQQ__Number__c' }, 
+    { label: 'Product', fieldName: 'SBQQ__Product__c' }, { label: 'Quantity', fieldName: 'SBQQ__Quantity__c' },
+    { label: 'List Unit Price', fieldName: 'SBQQ__ListPrice__c' }, { label: 'Regular Unit Price', fieldName: 'SBQQ__RegularPrice__c' }, 
+    { label: 'Customer Unit Price', fieldName: 'SBQQ__CustomerPrice__c' }, { label: 'Net Unit Price', fieldName: 'SBQQ__NetPrice__c' }, 
+    { label: 'Net Total', fieldName: 'SBQQ__NetTotal__c' }];
 
-    @wire(getQuoteLinesData) wiredQuote({ data, error }) {
-        if(data) {
-            this.quoteLineRecord = data[0];
-            this.quoteLineRecordId = this.quoteLineRecord.Id;
-            console.log(this.quoteLineRecord.Id);
-        } else if (error) {
-            console.log(error);
-        }
-    }
+export default class CartPage extends LightningElement {
+    error;
+    quoteLineFields = quoteLineFields;
+
+    @wire(getQuoteLinesData)
+    quoteLines;
 }

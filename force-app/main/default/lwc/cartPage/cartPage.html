@@ -1,11 +1,8 @@
 <template>
     <lightning-card title="Cart Page">
-        <div class="slds-var-m-around_medium">
-            <lightning-record-form record-id={quoteLineRecordId}
-            object-api-name='SBQQ__QuoteLine__c'
-            fields={quoteLineFields}
-            mode="view">
-            </lightning-record-form>
+        <div style="height: 300px;">
+            <lightning-datatable key-field="Id" data={quoteLines.data} columns={quoteLineFields}>
+            </lightning-datatable>
         </div>
     </lightning-card>
 </template>
