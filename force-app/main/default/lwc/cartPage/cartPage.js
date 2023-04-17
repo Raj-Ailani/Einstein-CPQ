@@ -1,19 +1,21 @@
-import { LightningElement, api } from 'lwc';
-import addSelectedProducts from '@salesforce/apex/addProduct.addSelectedProducts';
+import { LightningElement, api, wire } from 'lwc';
+import getQuoteLinesData from '@salesforce/apex/getQuoteLines.getQuoteLinesData'
 
 export default class CartPage extends LightningElement {
+    quoteLineRecord;
+    quoteLineRecordId;
+    quoteLineFields = ['Name', 'SBQQ__Number__c', 'SBQQ__Product__c', 'SBQQ__Quantity__c', 
+        'SBQQ__ListPrice__c', 'SBQQ__RegularPrice__c', 'SBQQ__CustomerPrice__c', 'SBQQ__NetPrice__c',
+        'SBQQ__NetTotal__c'];
+    quoteLineDisplay;
 
-    productIds = ['01t2w00000GeEpWAAV', '01t2w00000GeEpyAAF',
-        '01t2w00000GeEpYAAV', '01t2w00000GeEpeAAF', '01t2w00000GeEq8AAF'];
-    @api productId;
-
-    addToQuote() {
-        addSelectedProducts({ productId: this.productId })
-            .then(result => {
-                console.log('Product Added to Quote');
-            })
-            .catch(error => {
-                console.error('Error Message:', error);
-            });
+    @wire(getQuoteLinesData) wiredQuote({ data, error }) {
+        if(data) {
+            this.quoteLineRecord = data[0];
+            this.quoteLineRecordId = this.quoteLineRecord.Id;
+            console.log(this.quoteLineRecord.Id);
+        } else if (error) {
+            console.log(error);
+        }
     }
 }
