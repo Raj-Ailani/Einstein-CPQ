@@ -1,5 +1,5 @@
 public class createOpportunity {
-    public static void createOpportunityRecord(Id accountId) {
+    public static Id createOpportunityRecord(Id accountId) {
         Account acct = [SELECT Id, Name FROM Account WHERE Id = :accountId LIMIT 1];
 
         Opportunity opp = new Opportunity();
@@ -10,5 +10,6 @@ public class createOpportunity {
         opp.Amount = 0.0;
 
         insert opp;
+        return opp.Id;
     }
 }

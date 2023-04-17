@@ -1,6 +1,6 @@
 public class createQuote {
-    public static void createQuoteRecord() {
-        Opportunity latestOpp = [SELECT Id, AccountId, CloseDate, StageName, Amount, Pricebook2Id FROM Opportunity ORDER BY CreatedDate DESC LIMIT 1];
+    public static Id createQuoteRecord(Id accountId) {
+        Opportunity latestOpp = [SELECT Id, AccountId, CloseDate, StageName, Amount, Pricebook2Id FROM Opportunity WHERE AccountId=:accountId ORDER BY CreatedDate DESC LIMIT 1];
 
         SBQQ__Quote__c newQuote = new SBQQ__Quote__c();
         newQuote.SBQQ__Opportunity2__c = latestOpp.Id;
@@ -10,5 +10,7 @@ public class createQuote {
         newQuote.SBQQ__Primary__c = true;
 
         insert newQuote;
+
+        return newQuote.Id;
     }
 }
