@@ -17,9 +17,30 @@ export default class ParentPage extends LightningElement {
     }
 
     handleComponant(event){
+        console.log('inside parent');
         console.log(event.detail);
+        console.log('after log in parent');
         if(event.detail == 'Opportunity'){
             this.welcomeOrRecord = false;
         }
     }
+
+    // subscribeToMessageChannel() {
+    //     this.subscription = subscribe(
+    //       this.messageContext,
+    //       OppQuote_CHANNEL,
+    //       (message) => this.handleMessage(message)
+    //     );
+    // }
+
+    // connectedCallback() {
+    //     this.subscribeToMessageChannel();
+    // }
+    
+    // handleMessage(message) {
+    //     console.log(message);
+    //     if(message.OpptyOrQoute = "Opportunity"){
+    //         this.welcomeOrRecord = false;
+    //     }
+    // }
 }
