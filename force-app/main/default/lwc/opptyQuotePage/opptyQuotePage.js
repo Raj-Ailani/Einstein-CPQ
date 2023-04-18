@@ -38,6 +38,7 @@ export default class OpptyQuotePage extends LightningElement {
     }
     handleMessage(message) {
       console.log(message);
+      //console.log("Inside Handle message")
         if(message.OpptyOrQoute == 'Opportunity') {
           //this.counter += message.constant;
           this.opportunityDisplay = true;
